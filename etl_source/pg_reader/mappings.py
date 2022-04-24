@@ -1,4 +1,4 @@
-from typing import Callable, Final, Type
+from typing import Callable, Type
 
 from models.models import AbstractModel, GenresES, MoviesES, PersonsES
 from pg_reader.query_composer import (compose_genres_query,

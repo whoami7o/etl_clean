@@ -31,7 +31,7 @@ class RedisState(SateInterface):
 
     @backoff.on_exception(**BACKOFF_CONFIG)
     def get_key(self, key: str, default: Optional[str] = None) -> Optional[str]:
-        if value := self._connection.get(key):
+        if value := self.connection.get(key):
             return value.decode(encoding="utf-8")
         return default
 

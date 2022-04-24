@@ -115,9 +115,6 @@
             "analyzer": "ru_en"
           }
         }
-      },
-      "file_path": {
-        "type": "text"
       }
     }
   }

@@ -42,4 +42,3 @@ class MoviesES(AbstractModel):
     directors: Optional[List[PersonFilmWork]] = None
     actors: Optional[List[PersonFilmWork]] = None
     writers: Optional[List[PersonFilmWork]] = None
-    file_path: Optional[str] = None

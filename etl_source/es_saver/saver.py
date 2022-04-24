@@ -44,8 +44,8 @@ class ElasticSaver:
         item_generator = self._generate_data(data, index, iter_size)
 
         t_start = time.perf_counter()
-        rows, *_ = helpers.bulk(
-            client=self._connection,
+        rows, _ = helpers.bulk(
+            client=self.connection,
             actions=item_generator,
             index=index,
             chunk_size=iter_size,
@@ -68,15 +68,16 @@ class ElasticSaver:
         index: str,
         iter_size: Optional[int] = 1000,
     ) -> Iterator[dict]:
+
         last_loaded: Optional[str] = None
         key: str = "load_from_{0}".format(index)
 
         for i, data_ in enumerate(data):
-            item, last_record, *_ = data_
+            item, last_record = data_
             last_loaded = last_record
             yield item
 
-            if i % iter_size:
+            if i % iter_size == 0:
                 self._state.set_key(key, last_loaded)
 
         if last_loaded:
@@ -86,7 +87,5 @@ class ElasticSaver:
     def _connect(self) -> Elasticsearch:
         """Метод для создания соединения с Elasticsearch."""
         return Elasticsearch(
-            [
-                "{0}:{1}".format(self._config.host, self._config.port),
-            ]
+                "http://{0}:{1}".format(self._config.host, self._config.port)
         )

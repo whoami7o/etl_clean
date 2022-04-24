@@ -7,7 +7,6 @@ class PostgresConnectionConfig(BaseSettings):
     password: str = Field(..., env="POSTGRES_PASSWORD")
     host: str = Field(..., env="POSTGRES_HOST")
     port: int = Field(..., env="POSTGRES_PORT")
-    # options: str = Field(..., env="POSTGRES_OPTIONS")
 
 
 class ElasticConnectionConfig(BaseSettings):

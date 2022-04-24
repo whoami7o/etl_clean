@@ -57,10 +57,11 @@ class PGReader:
         query: str,
         iter_size: Optional[int] = 1000,
     ) -> Iterator[tuple[dict, str]]:
-        cursor = self._connection.cursor()
+        cursor = self.connection.cursor()
         cursor.itersize = iter_size
+        cursor.execute(query)
 
-        for row in cursor.execute(query):
+        for row in cursor:
             data = model(**row).dict()
             data["_id"] = data["id"]
             yield data, str(row["updated_at"])
