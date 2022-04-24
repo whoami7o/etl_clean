@@ -14,9 +14,9 @@ class PGReader:
     _model_map: Final = MODEL_MAP
 
     def __init__(
-            self,
-            connection_conf: PostgresConnectionConfig,
-            postgres_connection: Optional[pg_conn] = None,
+        self,
+        connection_conf: PostgresConnectionConfig,
+        postgres_connection: Optional[pg_conn] = None,
     ) -> None:
         self._config = connection_conf
         self._connection = postgres_connection
@@ -33,18 +33,16 @@ class PGReader:
 
     @backoff.on_exception(**BACKOFF_CONFIG)
     def read_data(
-            self,
-            index: str,
-            query: str,
-            iter_size: Optional[int] = 1000,
+        self,
+        index: str,
+        query: str,
+        iter_size: Optional[int] = 1000,
     ) -> Iterator[tuple[dict, str]]:
 
         if model := self._model_map.get(index, None):
             return self._create_generator(model, query, iter_size)
 
-        raise KeyError(
-            "No model for passed index: {0}".format(index.upper())
-        )
+        raise KeyError("No model for passed index: {0}".format(index.upper()))
 
     @backoff.on_exception(**BACKOFF_CONFIG)
     def _connect(self) -> pg_conn:
@@ -54,15 +52,15 @@ class PGReader:
 
     @backoff.on_exception(**BACKOFF_CONFIG)
     def _create_generator(
-            self,
-            model: Type[AbstractModel],
-            query: str,
-            iter_size: Optional[int] = 1000,
+        self,
+        model: Type[AbstractModel],
+        query: str,
+        iter_size: Optional[int] = 1000,
     ) -> Iterator[tuple[dict, str]]:
         cursor = self._connection.cursor()
         cursor.itersize = iter_size
 
         for row in cursor.execute(query):
             data = model(**row).dict()
-            data['_id'] = data['id']
-            yield data, str(row['updated_at'])
+            data["_id"] = data["id"]
+            yield data, str(row["updated_at"])

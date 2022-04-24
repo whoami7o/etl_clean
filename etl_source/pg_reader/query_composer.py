@@ -69,9 +69,9 @@ def compose_persons_query(load_from: Optional[str]) -> str:
 
 
 def compose_query_for_index(
-        index: str,
-        load_from: Optional[str] = None,
-        composer_map: Optional[dict[str, Callable]] = None,
+    index: str,
+    load_from: Optional[str] = None,
+    composer_map: Optional[dict[str, Callable]] = None,
 ) -> str:
     """Формирует нужный sql запрос в зависимости от индекса"""
     if not composer_map:
@@ -80,6 +80,4 @@ def compose_query_for_index(
     if query_composer := composer_map.get(index) and load_from:
         return query_composer(load_from)
 
-    raise KeyError(
-        "Can't compose query for index: {0}".format(index.upper())
-    )
+    raise KeyError("Can't compose query for index: {0}".format(index.upper()))

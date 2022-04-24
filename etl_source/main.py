@@ -3,32 +3,28 @@ import time
 from datetime import datetime
 from typing import Optional
 
-from common import (
-    ETL_CONFIG,
-    ES_CONFIG,
-    LOGGER_CONFIG,
-    POSTGRES_CONFIG,
-    REDIS_CONFIG,
-)
+from common import ES_CONFIG, ETL_CONFIG, LOGGER_CONFIG, POSTGRES_CONFIG, REDIS_CONFIG
 from es_saver.saver import ElasticSaver
-from pg_reader.reader import PGReader
 from pg_reader.query_composer import compose_query_for_index
+from pg_reader.reader import PGReader
 from state.redis_state import RedisState
 
 
 def etl_process(
-        query: str,
-        index: str,
-        postgres_reader: PGReader,
-        es_saver: ElasticSaver,
-        iter_size: Optional[int] = 1000,
+    query: str,
+    index: str,
+    postgres_reader: PGReader,
+    es_saver: ElasticSaver,
+    iter_size: Optional[int] = 1000,
 ) -> None:
 
     data_generator = postgres_reader.read_data(
         index=index, query=query, iter_size=iter_size
     )
     es_saver.upload_data(
-        data=data_generator, index=index, iter_size=iter_size,
+        data=data_generator,
+        index=index,
+        iter_size=iter_size,
     )
 
 
@@ -46,14 +42,11 @@ def main() -> None:
     logger = logging.getLogger(__name__)
 
     while True:
-        logger.info(
-            "STARTING ETL SYNCHRONIZATION..."
-        )
+        logger.info("STARTING ETL SYNCHRONIZATION...")
 
         for index in indexes:
             load_from = state.get_key(
-                "load_from_{0}".format(index),
-                default=str(datetime.min)
+                "load_from_{0}".format(index), default=str(datetime.min)
             )
 
             try:
@@ -63,20 +56,20 @@ def main() -> None:
                     index=index,
                     postgres_reader=postgres_reader,
                     es_saver=elastic_saver,
-                    iter_size=iter_size
+                    iter_size=iter_size,
                 )
 
             except ValueError as e:
                 logger.error(
-                    "ERROR while transferring index: {0}\nERROR INFO:\n{1}".format(index, e)
+                    "ERROR while transferring index: {0}\nERROR INFO:\n{1}".format(
+                        index, e
+                    )
                 )
                 continue
 
-        logger.info(
-            "LET'S CHILL FOR SOME TIME ({0} seconds)".format(freq)
-        )
+        logger.info("LET'S CHILL FOR SOME TIME ({0} seconds)".format(freq))
         time.sleep(freq)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
