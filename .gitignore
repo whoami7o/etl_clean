@@ -123,7 +123,7 @@ cython_debug/
 .idea/
 
 # contents of init data dirs
-data/*
+docker/postgres_db/data/*
 results/*
-!data/.gitkeep
+!docker/postgres_db/data/.gitkeep
 !results/.gitkeep

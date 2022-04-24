@@ -1,0 +1,51 @@
+version: "3.8"
+services:
+
+  postgres:
+    build:
+      context: ./docker/postgres_db
+      dockerfile: Dockerfile
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+    ports:
+      - '5432:5432'
+
+  elasticsearch:
+    build:
+      context: ./docker/elastic
+      dockerfile: Dockerfile
+      args:
+        DISCOVERY_TYPE: single-node
+    ports:
+      - '9200:9200'
+    volumes:
+      - elastic_data
+
+  redis:
+    image: redis:6-alpine
+    restart: always
+    volumes:
+      - redis_data
+    ports:
+      - '6379:6379'
+
+  etl:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./docker/etl/Dockerfile
+    depends_on:
+      - db
+      - elasticsearch
+      - redis
+    env_file:
+      - .env
+    command: python main.py
+
+
+volumes:
+  postgres_data:
+  elastic_data:
+  redis_data:

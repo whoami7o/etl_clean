@@ -3,7 +3,8 @@ import time
 from datetime import datetime
 from typing import Optional
 
-from common import ES_CONFIG, ETL_CONFIG, LOGGER_CONFIG, POSTGRES_CONFIG, REDIS_CONFIG
+from common import (ES_CONFIG, ETL_CONFIG, LOGGER_CONFIG, POSTGRES_CONFIG,
+                    REDIS_CONFIG)
 from es_saver.saver import ElasticSaver
 from pg_reader.query_composer import compose_query_for_index
 from pg_reader.reader import PGReader

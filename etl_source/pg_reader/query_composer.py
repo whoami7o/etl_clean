@@ -1,4 +1,4 @@
-from typing import Callable, Final, Optional
+from typing import Callable, Optional
 
 from pg_reader.mappings import QUERY_MAP
 
