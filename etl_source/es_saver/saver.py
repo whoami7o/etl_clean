@@ -87,5 +87,5 @@ class ElasticSaver:
     def _connect(self) -> Elasticsearch:
         """Метод для создания соединения с Elasticsearch."""
         return Elasticsearch(
-                "http://{0}:{1}".format(self._config.host, self._config.port)
+            "http://{0}:{1}".format(self._config.host, self._config.port)
         )

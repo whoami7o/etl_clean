@@ -68,9 +68,9 @@ def compose_persons_query(load_from: Optional[str]) -> str:
 
 
 def compose_query_for_index(
-        index: str,
-        composer_map: dict[str, Callable],
-        load_from: Optional[str] = None,
+    index: str,
+    composer_map: dict[str, Callable],
+    load_from: Optional[str] = None,
 ) -> str:
     """Формирует нужный sql запрос в зависимости от индекса"""
     if (query_composer := composer_map.get(index)) and load_from:
