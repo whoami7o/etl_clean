@@ -30,7 +30,10 @@ class GenresES(AbstractModel):
 
 class PersonsES(PersonFilmWork):
     role: Optional[List[PersonRole]] = None
-    film_ids: Optional[List[UUID]] = None
+    film_ids: Optional[List[str]] = None
+
+    class Config:
+        use_enum_values = True
 
 
 class MoviesES(AbstractModel):
@@ -42,3 +45,6 @@ class MoviesES(AbstractModel):
     directors: Optional[List[PersonFilmWork]] = None
     actors: Optional[List[PersonFilmWork]] = None
     writers: Optional[List[PersonFilmWork]] = None
+
+    class Config:
+        use_enum_values = True
