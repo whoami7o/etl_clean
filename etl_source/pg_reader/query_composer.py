@@ -5,7 +5,6 @@ def compose_movies_query(load_from: Optional[str]) -> str:
     """
     Формирует sql запрос с подставленной временной меткой для индекса movies
     """
-    print(load_from)
 
     return f"""
     SELECT film_work.id,
